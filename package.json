@@ -1,0 +1,28 @@
+{
+  "name": "dunespice",
+  "version": "1.0.0",
+  "description": "ERC-20 token",
+  "main": "truffle-config.js",
+  "repository": "",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test",
+    "dev": "truffle dev",
+    "lint": "solhint --fix contracts/**/*.sol"
+  },
+  "keywords": [
+    "ethereum",
+    "ERC-20"
+  ],
+  "author": "Naruby Riverlione",
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "^3.1.0"
+  },
+  "devDependencies": {
+    "@openzeppelin/test-helpers": "^0.5.6",
+    "solhint": "^3.1.0"
+  }
+}
