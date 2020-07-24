@@ -8,7 +8,7 @@ const CstInitial = {
   Supply: 100,
   Name: 'DuneSpice',
   Symbol: 'DSP',
-  Decimals: 18
+  Decimals: 1 //18
 }
 
 contract('DuneSpice', function (accounts) {
@@ -66,4 +66,74 @@ contract('DuneSpice', function (accounts) {
       assert.equal(receiverBalance.toString(), sendAmount, "Receiver should have send amount")
     })
   })
+  describe('Pause', () => {
+    it('Pause token, transfer should fail', async () => {
+      try {
+        await SpiceContract.Pause()
+        const sendAmount = 2
+        const result = await SpiceContract.transfer(accounts[1], sendAmount)
+        assert.isNok(result, "Transaction should fail as token is pause")
+      }
+      catch (ex) {
+        assert.isNotNull(ex, "Action on token that is pause should fail")
+      }
+      finally {
+        const Balance = await SpiceContract.balanceOf(accounts[1])
+        assert.equal(Balance.toString(), 0, "Balance of account 1 should still by zero as transfer failed")
+      }
+    })
+    it('Pause token, burn should fail', async () => {
+      try {
+        await SpiceContract.Pause()
+        await SpiceContract.burn(2)
+      }
+      catch (ex) {
+        // console.log(ex.message)
+        assert.isNotNull(ex, "Action on token that is pause should fail")
+      }
+      finally {
+        const ownerBalance = await SpiceContract.balanceOf(accounts[0])
+        assert.equal(ownerBalance.toString(), CstInitial.Supply, "Owner should still have Initial supply as burn failed")
+      }
+    })
+    it('Unpause token, transfer should work', async () => {
+      try {
+        await SpiceContract.Pause()
+        await SpiceContract.Unpause()
+        const sendAmount = 2
+        const result = await SpiceContract.transfer(accounts[1], sendAmount)
+        assert.isOk(result, "Transaction should work as token is unpause")
+      }
+      catch (ex) {
+        assert.fail(ex.message)
+      }
+    })
+  })
+  describe('Burn', () => {
+    it('Burn tokens form owner, check supply', async () => {
+      const Burn = 34
+      await SpiceContract.burn(Burn)
+
+      const supply = await SpiceContract.totalSupply()
+      assert.equal(supply, CstInitial.Supply - Burn, 'Wrong supply, should be initial supply - burn')
+      const balance = await SpiceContract.balanceOf(accounts[0])
+      assert.equal(balance.toString(), CstInitial.Supply - Burn, 'The contract owner should own initial supply - burn')
+
+    })
+    it('Burn tokens form account 1, check supply', async () => {
+      const Budget = 20
+      const result = await SpiceContract.transfer(accounts[1], Budget)
+      assert.isOk(result, "Transaction should be valid")
+
+      const Burn = 12
+      await SpiceContract.burnFrom(accounts[1], Burn)
+
+      const supply = await SpiceContract.totalSupply()
+      assert.equal(supply, CstInitial.Supply - Burn, 'Wrong supply, should be initial - burn')
+      const balance = await SpiceContract.balanceOf(accounts[1])
+      assert.equal(balance.toString(), Budget - Burn, 'The contract owner should own budget - burn')
+    })
+  })
+
+
 });
