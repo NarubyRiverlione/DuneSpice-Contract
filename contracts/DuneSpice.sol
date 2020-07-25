@@ -13,15 +13,15 @@ contract DuneSpice is ERC20Pausable, Ownable {
         if (!paused()) _pause();
     }
 
-    function Unpause() external onlyOwner {
+    function UnPause() external onlyOwner {
         if (paused()) _unpause();
     }
 
-    function burn(uint256 _amount) external onlyOwner {
+    function Burn(uint256 _amount) external onlyOwner {
         _burn(owner(), _amount);
     }
 
-    function burnFrom(address _address, uint256 _amount) external onlyOwner {
+    function BurnFrom(address _address, uint256 _amount) external onlyOwner {
         _burn(_address, _amount);
     }
 }

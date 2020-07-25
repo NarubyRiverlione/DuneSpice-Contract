@@ -1,5 +1,7 @@
 {
   "extends": "solhint:recommended",
   "plugins": [],
-  "rules": {}
+  "rules": {
+    "var-name-mixedcase": "off"
+  }
 }

@@ -3,6 +3,7 @@ const { balance } = require('@openzeppelin/test-helpers')
 const { web3 } = require('@openzeppelin/test-helpers/src/setup')
 
 const DuneSpice = artifacts.require('DuneSpice')
+const ERR_REQUIRE = 'Error: Returned error: VM Exception while processing transaction:'
 
 const CstInitial = {
   Supply: 100,
@@ -85,7 +86,7 @@ contract('DuneSpice', function (accounts) {
     it('Pause token, burn should fail', async () => {
       try {
         await SpiceContract.Pause()
-        await SpiceContract.burn(2)
+        await SpiceContract.Burn(2)
       }
       catch (ex) {
         // console.log(ex.message)
@@ -99,7 +100,7 @@ contract('DuneSpice', function (accounts) {
     it('Unpause token, transfer should work', async () => {
       try {
         await SpiceContract.Pause()
-        await SpiceContract.Unpause()
+        await SpiceContract.UnPause()
         const sendAmount = 2
         const result = await SpiceContract.transfer(accounts[1], sendAmount)
         assert.isOk(result, "Transaction should work as token is unpause")
@@ -112,7 +113,7 @@ contract('DuneSpice', function (accounts) {
   describe('Burn', () => {
     it('Burn tokens form owner, check supply', async () => {
       const Burn = 34
-      await SpiceContract.burn(Burn)
+      await SpiceContract.Burn(Burn)
 
       const supply = await SpiceContract.totalSupply()
       assert.equal(supply, CstInitial.Supply - Burn, 'Wrong supply, should be initial supply - burn')
@@ -126,7 +127,7 @@ contract('DuneSpice', function (accounts) {
       assert.isOk(result, "Transaction should be valid")
 
       const Burn = 12
-      await SpiceContract.burnFrom(accounts[1], Burn)
+      await SpiceContract.BurnFrom(accounts[1], Burn)
 
       const supply = await SpiceContract.totalSupply()
       assert.equal(supply, CstInitial.Supply - Burn, 'Wrong supply, should be initial - burn')

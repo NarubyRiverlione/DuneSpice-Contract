@@ -1,3 +1,5 @@
-module.exports = function(_deployer) {
-  // Use deployer to state migration tasks.
+const DuneSpice = artifacts.require("DuneSpice");
+
+module.exports = function (deployer) {
+  deployer.deploy(DuneSpice, 10);
 };
