@@ -26,7 +26,6 @@ contract('DuneSpice', function (accounts) {
       assert.equal(supply, CstInitial.Supply, 'Wrong initial supply')
       const balance = await SpiceContract.balanceOf(accounts[0])
       assert.equal(balance.toString(), CstInitial.Supply, 'The contract owner should own all the initial tokens')
-
     })
     it('Name and symbol', async () => {
       const symbol = await SpiceContract.symbol()
@@ -135,6 +134,15 @@ contract('DuneSpice', function (accounts) {
       assert.equal(balance.toString(), Budget - Burn, 'The contract owner should own budget - burn')
     })
   })
-
+  describe('Minting', () => {
+    it('Mint', async () => {
+      const added = 10
+      await SpiceContract.Mint(added)
+      const supply = await SpiceContract.totalSupply()
+      assert.equal(supply, CstInitial.Supply + added, "Wrong supply, should be initial + added")
+      const balance = await SpiceContract.balanceOf(accounts[0])
+      assert.equal(balance.toString(), CstInitial.Supply + added, 'The contract owner should own  initial + added tokens')
+    })
+  })
 
 });
