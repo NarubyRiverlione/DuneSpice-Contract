@@ -121,7 +121,7 @@ contract('DuneSpice', function (accounts) {
       assert.equal(balance.toString(), CstInitial.Supply - Burn, 'The contract owner should own initial supply - burn')
 
     })
-    it('Burn tokens form account 1, check supply', async () => {
+    it('Burn tokens from account 1, check supply', async () => {
       const Budget = 20
       const result = await SpiceContract.transfer(accounts[1], Budget)
       assert.isOk(result, "Transaction should be valid")
