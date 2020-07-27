@@ -25,7 +25,10 @@ contract DuneSpice is ERC20Pausable, Ownable {
         _burn(_address, _amount);
     }
 
-    function Mint(uint256 _amountCreating) external onlyOwner {
-        _mint(msg.sender, _amountCreating);
+    function GiveNewTokens(address _toAddress, uint256 _amountCreating)
+        external
+        onlyOwner
+    {
+        _mint(_toAddress, _amountCreating);
     }
 }

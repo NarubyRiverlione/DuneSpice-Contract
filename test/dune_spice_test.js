@@ -135,13 +135,20 @@ contract('DuneSpice', function (accounts) {
     })
   })
   describe('Minting', () => {
-    it('Mint', async () => {
+    it('Give new tokens', async () => {
       const added = 10
-      await SpiceContract.Mint(added)
+      await SpiceContract.GiveNewTokens(accounts[1], added)
+
       const supply = await SpiceContract.totalSupply()
       assert.equal(supply, CstInitial.Supply + added, "Wrong supply, should be initial + added")
-      const balance = await SpiceContract.balanceOf(accounts[0])
-      assert.equal(balance.toString(), CstInitial.Supply + added, 'The contract owner should own  initial + added tokens')
+
+      const balanceReciever = await SpiceContract.balanceOf(accounts[1])
+      assert.equal(balanceReciever.toString(), added,
+        'The receiver should own added tokens')
+
+      const balanceOwner = await SpiceContract.balanceOf(accounts[0])
+      assert.equal(balanceOwner.toString(), CstInitial.Supply,
+        'The contract owner should still own the initial tokens, not the new ones')
     })
   })
 
