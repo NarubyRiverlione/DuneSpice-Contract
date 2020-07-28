@@ -3,6 +3,7 @@ pragma solidity >=0.5.0 <0.7.0;
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
 import "./HarvesterFactory.sol";
+import "./DuneSpice.sol";
 
 contract Harvestering is HarvesterFactory {
     using SafeMath for uint256;
@@ -48,5 +49,7 @@ contract Harvestering is HarvesterFactory {
         external
         whenNotPaused()
         isHarvesterOwner(_harvesterId)
-    {}
+    {
+        // transfer(harvesterToOwner[_harvesterId], harvest[_harvesterId]);
+    }
 }
