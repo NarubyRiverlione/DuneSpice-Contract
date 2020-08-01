@@ -89,7 +89,12 @@ module.exports = {
 
   // Set default mocha options here, use special reporters etc.
   mocha: {
-    timeout: 100000
+    enableTimeouts: false,
+    timeout: 60000,
+    reporter: 'eth-gas-reporter',
+    reporterOptions: {
+      coinmarketcap: '98726fba-101f-448c-80d0-6cc63db9982a'
+    }
   },
 
   // Configure your compilers
@@ -99,8 +104,8 @@ module.exports = {
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       settings: {          // See the solidity docs for advice about optimization and evmVersion
         optimizer: {
-          enabled: false,
-          runs: 200
+          enabled: true,
+          runs: 100
         },
         //  evmVersion: "byzantium"
       }

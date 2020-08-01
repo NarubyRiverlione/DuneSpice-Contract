@@ -9,13 +9,14 @@ contract HarvesterFactory is Ownable, Pausable {
 
     uint256 public Price;
 
-    struct Harvester {
-        uint8 Damage;
-        uint8 Load;
-        uint8 Capacity;
-    }
+    // struct Harvester {
+    //     uint8 Damage;
+    //     uint8 Load;
+    //     uint8 Capacity;
+    // }
 
-    Harvester[] public Harvesters;
+    // uint256[] public Harvesters;
+    uint256 public lastID = 0;
     mapping(uint256 => address) public harvesterToOwner;
     mapping(address => uint256) public ownerHarvesterCount;
 
@@ -31,9 +32,9 @@ contract HarvesterFactory is Ownable, Pausable {
         _;
     }
 
-    function amountOfHarvesters() external view returns (uint256) {
-        return Harvesters.length;
-    }
+    // function amountOfHarvesters() external view returns (uint256) {
+    //     return Harvesters.length;
+    // }
 
     function setPrice(uint256 _price) external onlyOwner whenNotPaused() {
         Price = _price;
@@ -41,9 +42,11 @@ contract HarvesterFactory is Ownable, Pausable {
 
     function buyHarvester() external payable whenNotPaused() {
         require(msg.value >= Price, "Price is higher that amount send");
-        uint256 id = Harvesters.length; // as first element is 0 --> length = next
-        Harvesters.push(Harvester(0, 0, 10)); // create new Harvester with zero damage
-        harvesterToOwner[id] = msg.sender; // link id and address
+        //  uint256 id = Harvesters.length; // as first element is 0 --> length = next
+        harvesterToOwner[lastID] = msg.sender; // link id and address
+        lastID = lastID.add(1);
+        //   Harvesters.push(Harvester(0)); // create new Harvester with zero damage
+        // Harvesters.push(id); // create new Harvester with zero damage
         ownerHarvesterCount[msg.sender] = ownerHarvesterCount[msg.sender].add(
             1
         );
